@@ -1,41 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+// App.js
+import React from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import WelcomeScreen from './screens/WelcomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import HomeScreen from './screens/HomeScreen';
 
-export default function App() {
-  const [showText, setShowText] = useState(false);
-  const [ButtonMainText, setButtonMainText] = useState('Show Text');
-  const ButtonText1 = 'Show Text';
-  const ButtonText2 = 'Remove Text';
+const Stack = createStackNavigator();
 
-  const setButtonName = () => {
-    if (ButtonMainText === ButtonText1) {
-      setButtonMainText(ButtonText2);
-    } else {
-      setButtonMainText(ButtonText1);
-    }
-  };
-
+const App = () => {
   return (
     <View style={styles.container}>
-      <View>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>OMG I HOPE THIS WORKS</Text>
-        <StatusBar style="auto" />
-      </View>
-      <View>
-        <Button title={ButtonMainText} onPress={() => { setShowText(!showText); setButtonName(); }} />
-        {showText && <Text>Text to show</Text>}
-      </View>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Welcome">
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    width: '100%',
   },
 });
+
+export default App;
