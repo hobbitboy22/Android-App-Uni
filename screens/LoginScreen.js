@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
       })
       .catch(err => console.error(err));
   };
-
+  
   return (
     <View style={styles.container}>
       {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
