@@ -1,6 +1,6 @@
 // AddActivityScreen.js
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 
 const AddActivityScreen = ({route, navigation}) => {
     const [activityName, setActivityName] = useState('');
@@ -51,42 +51,73 @@ const AddActivityScreen = ({route, navigation}) => {
         }
     };
 
-    return (
-        <View style={styles.container}>
-            <View>
-                <TextInput style={styles.textInput}
-                    placeholder="Enter activity name"
-                    value={activityName}
-                    onChangeText={setActivityName}
-                    maxLength={150}
-                />
-                <TextInput style={styles.textInput}
-                    placeholder="Enter description"
-                    value={description}
-                    onChangeText={setDescription}
-                    maxLength={150}
-                />
-                <TextInput style={styles.textInput}
-                    placeholder="Enter type"
-                    value={type}
-                    onChangeText={setType}
-                    maxLength={50}
-                />
-                <Button style={styles.button} title="Add Activity" onPress={addActivity} />
-            </View>
+    function capitalizeWords(text) {
+        return text.replace(/\b\w/g, char => char.toUpperCase());
+    }
 
-            <View>
-                <View>
-                    {activities.length > 0 ? (
-                        activities.map((activity) => (
-                            <Text key={activity.id}>{activity.name}</Text>
-                        ))
-                    ) : (
-                        <Text>No activities available</Text>
-                    )}
+    function capitalizeFirstLetter(text) {
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    return (
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+                <View style={styles.container}>
+                    <View>
+                        <TextInput style={styles.textInput}
+                            placeholder="Enter activity name"
+                            value={activityName}
+                            onChangeText={(text) => setActivityName(capitalizeWords(text))}
+                            maxLength={150}
+                        />
+                        <TextInput style={styles.textInput}
+                            placeholder="Enter description"
+                            value={description}
+                            onChangeText={(text) => setDescription(capitalizeFirstLetter(text))}
+                            maxLength={150}
+                        />
+                        <TextInput style={styles.textInput}
+                            placeholder="Enter type"
+                            value={type}
+                            onChangeText={(text) => setType(capitalizeFirstLetter(text))}
+                            maxLength={50}
+                        />
+                        <Button style={styles.button} title="Add Activity" onPress={addActivity} />
+                    </View>
+
+                    <View>
+                        <View>
+                            {activities.length > 0 ? (
+                                activities.map((activity) => (
+                                    <Text key={activity.id}>{activity.name}</Text>
+                                ))
+                            ) : (
+                                <Text>No activities available</Text>
+                            )}
+                        </View>
+                    </View>
                 </View>
+        </ScrollView>
+
+        <View style={styles.footer}>
+            <View style={styles.footerButton}>
+
+                <TouchableOpacity onPress={() => navigation.navigate('AddActivity', { user: user })}>
+                    <Text style={styles.footerText}>Add Activity</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Home', { user: user })}>
+                    <Text style={styles.footerText}>Home</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Workout', { user: user })}>
+                    <Text style={styles.footerText}>Add Workout</Text>
+                </TouchableOpacity>
+
             </View>
         </View>
+
+    </SafeAreaView>
     );
 };
 
@@ -131,7 +162,23 @@ const styles = StyleSheet.create({
       fontSize: 20,
       marginTop: 20,
       marginBottom: 20,
-    }
+    },
+    footer: {
+        width: '100%',
+        height: 50,
+        backgroundColor: 'grey',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      footerButton: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+      },
+      footerText: {
+        color: 'black',
+        fontSize: 20,
+      }
   });
 
 export default AddActivityScreen;

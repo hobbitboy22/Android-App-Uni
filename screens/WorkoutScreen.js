@@ -1,12 +1,14 @@
 // WorkoutScreen.js
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Text, Picker, StyleSheet } from 'react-native'
+import { View, TextInput, Button, Text, Picker, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
 
-const WorkoutScreen = ({ navigation }) => {
+const WorkoutScreen = ({ route, navigation }) => {
     const [activities, setActivities] = useState([]);
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [duration, setDuration] = useState('');
   
+    const { user } = route.params;
+
     useEffect(() => {
       fetchActivities();
     }, []);
@@ -60,29 +62,53 @@ const WorkoutScreen = ({ navigation }) => {
     };
   
     return (
-        <View style={styles.container}>
-            <Picker
-                selectedValue={selectedActivity ? selectedActivity.id : null}
-                onValueChange={(itemValue) => {
-                    const activityId = Number(itemValue);
-                    const activity = activities.find((activity) => activity.id === activityId);
-                    setSelectedActivity(activity);
-                  }}
-            >
-                <Picker.Item label="Please select an activity" value={null} />
-                {activities.map((activity) => (
-                    <Picker.Item key={activity.id} label={activity.name} value={activity.id} />
-                ))}
-            </Picker>
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+                <View style={styles.container}>
+                    <Picker
+                        selectedValue={selectedActivity ? selectedActivity.id : null}
+                        onValueChange={(itemValue) => {
+                            const activityId = Number(itemValue);
+                            const activity = activities.find((activity) => activity.id === activityId);
+                            setSelectedActivity(activity);
+                        }}
+                    >
+                        <Picker.Item label="Please select an activity" value={null} />
+                        {activities.map((activity) => (
+                            <Picker.Item key={activity.id} label={activity.name} value={activity.id} />
+                        ))}
+                    </Picker>
 
-            <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                onChangeText={(text) => setDuration(text)}
-                value={duration}
-            />
-            <Button title="Add Workout" onPress={addWorkout} />
-        </View>
+                    <TextInput
+                        style={styles.input}
+                        keyboardType="numeric"
+                        onChangeText={(text) => setDuration(text)}
+                        value={duration}
+                    />
+                    <Button title="Add Workout" onPress={addWorkout} />
+                </View>
+            </ScrollView>
+
+            <View style={styles.footer}>
+                <View style={styles.footerButton}>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('AddActivity', {user: user} )}>
+                        <Text style={styles.footerText}>Add Activity</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('Home', { user: user })}>
+                        <Text style={styles.footerText}>Home</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('Workout', { user: user })}>
+                        <Text style={styles.footerText}>Add Workout</Text>
+                    </TouchableOpacity>
+
+                </View>
+            </View>
+
+        </SafeAreaView>
+
     );
   };
 
@@ -127,7 +153,23 @@ const styles = StyleSheet.create({
       fontSize: 20,
       marginTop: 20,
       marginBottom: 20,
-    }
+    },
+    footer: {
+        width: '100%',
+        height: 50,
+        backgroundColor: 'grey',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      footerButton: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+      },
+      footerText: {
+        color: 'black',
+        fontSize: 20,
+      }
   });
 
 export default WorkoutScreen;

@@ -1,8 +1,16 @@
 DONE Change buttons on login to touchable opacity
 DONE Change buttons on create an account to touchable opacity
+DONE Add footer on Home page
+DONE Add footer on Workouts Page
+DONE Add footer on Activities Page
+DONE Fix footer links on workout page
+DONE Edit home page styling
+DONE Move delete activity button to the bottom right corner of the View
+DONE Capitalise activity Name on addactivity
 
-Add footer on Home page
-Add Workout and Activity buttons in footer
-Edit home page styling
 Change layout of AddActivity page
 Change layout of AddWorkout Page
+Add placement text for duration within the workout page
+Password not strong enough error test on register
+Password verification on register
+Edit button text on register

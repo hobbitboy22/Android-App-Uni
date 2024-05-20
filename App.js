@@ -49,7 +49,9 @@ const App = () => {
             name="Home"
             component={HomeScreen}
             options={{
-              headerLeft: () => null
+              headerLeft: () => null,
+              headerTitleAlign: 'center',
+              headerTitleStyle: { fontSize: 30 }
             }}
           />
           <Stack.Screen

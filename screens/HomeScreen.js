@@ -1,6 +1,6 @@
 // HomeScreen.js
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, Button, Text, View, StyleSheet, Touchable, ScrollView } from 'react-native';
+import { TouchableOpacity, Text, View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 const HomeScreen = ({ route, navigation }) => {
@@ -95,48 +95,61 @@ const HomeScreen = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView>
-        <View style={styles.container}>
-          <Text style={styles.header}>Welcome!</Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+          <View style={styles.container}>
 
-          <View>
-            {workouts.length > 0 ? (
-              workouts.map((workout, index) => {
-                // Fetch the activity for this workout
-                fetch(`https://localhost:7267/api/activities/${workout.activityID}`)
-                  .then(response => response.json())
-                  .then(activity => {
-                    // Once the activity is fetched, update the workout in the state
-                    setWorkouts(workouts => workouts.map((w, i) => i === index ? {...w, activityName: activity.name, activityDescription: activity.description} : w));
-                  })
-                  .catch(error => console.error('Error:', error));
+            <View>
+              {workouts.length > 0 ? (
+                workouts.map((workout, index) => {
+                  // Fetch the activity for this workout
+                  fetch(`https://localhost:7267/api/activities/${workout.activityID}`)
+                    .then(response => response.json())
+                    .then(activity => {
+                      // Once the activity is fetched, update the workout in the state
+                      setWorkouts(workouts => workouts.map((w, i) => i === index ? {...w, activityName: activity.name, activityDescription: activity.description} : w));
+                    })
+                    .catch(error => console.error('Error:', error));
 
-                return (
-                  <View style={styles.workout} key={index}>
-                    <Text>Activity Name: {workout.activityName || 'Loading...'}</Text>
-                    <Text>{workout.activityDescription}</Text>
-                    <Text>Duration: {workout.duration}</Text>
-                    <TouchableOpacity style={styles.deleteButton} onPress={() => deleteWorkout(workout.id)}>
-                      <Text>Delete</Text>
-                    </TouchableOpacity>
-                  </View>
-                );
-              })
-            ) : (
-              <Text>No workouts available</Text>
-            )}
-          </View>
+                  return (
+                    <View style={styles.workout} key={index}>
+                      <Text style={styles.title}>{workout.activityName || 'Loading...'}</Text>
+                      <Text style={styles.information}>{workout.activityDescription}</Text>
+                      <Text style={styles.information}>Duration: {workout.duration === 1 ? `${workout.duration} minute` : `${workout.duration} minutes`}</Text>
+                      <TouchableOpacity style={styles.deleteButton} onPress={() => deleteWorkout(workout.id)}>
+                        <Text>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })
+              ) : (
+                <Text>No workouts available</Text>
+              )}
+            </View>
 
-        <TouchableOpacity style={styles.addActivityButton} onPress={() => navigation.navigate('AddActivity', {user: user} )}>
-          <Text style={styles.logoutText}>Add Activity</Text>
-        </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity style={styles.addWorkoutButton} onPress={() => navigation.navigate('Workout', { user: user })}>
-          <Text style={styles.logoutText}>Add Workout</Text>
-        </TouchableOpacity>
+      </ScrollView>
 
+      <View style={styles.footer}>
+        <View style={styles.footerButton}>
+
+          <TouchableOpacity onPress={() => navigation.navigate('AddActivity', {user: user} )}>
+            <Text style={styles.footerText}>Add Activity</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Home', { user: user })}>
+            <Text style={styles.footerText}>Home</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Workout', { user: user })}>
+            <Text style={styles.footerText}>Add Workout</Text>
+          </TouchableOpacity>
+
+        </View>
       </View>
-    </ScrollView>
+
+    </SafeAreaView>
 
   );
 };
@@ -154,14 +167,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop: 20,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-    width: '100%',
-  },
   logoutButton: {
     backgroundColor: 'red',
     paddingVertical: 5,
@@ -174,22 +179,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
   },
-  addWorkoutButton: {
-    position: 'absolute',
-    right: 10,
-    bottom: 10,
-    backgroundColor: 'green',
-    borderRadius: 30,
-    width: '10%',
-  },
-  addActivityButton:{
-    position: 'absolute',
-    right: 10,
-    bottom: 50,
-    backgroundColor: 'green',
-    borderRadius: 30,
-    width: '10%',
-  },
   workout: {
     backgroundColor: '#0077B6',
     borderWidth: 1,
@@ -199,18 +188,39 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: '100%',
     alignItems: 'center',
-  },
-  deleteWorkout: {
-    backgroundColor: 'red',
-    padding: 5,
-    borderRadius: 5,
-    marginTop: 5,
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
   },
   deleteButton: {
     backgroundColor: 'red',
     padding: 5,
     borderRadius: 5,
     marginTop: 5,
+    alignSelf: 'flex-end',
+  },
+  footer: {
+    width: '100%',
+    height: 50,
+    backgroundColor: 'grey',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  footerButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+  },
+  footerText: {
+    color: 'black',
+    fontSize: 20,
+  },
+  title: {
+    fontSize: 25,
+    marginBottom: 5,
+    fontWeight: 'bold',
+  },
+  information: {
+    fontSize: 20,
   },
 });
 
