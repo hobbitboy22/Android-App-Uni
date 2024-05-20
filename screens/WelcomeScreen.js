@@ -1,31 +1,43 @@
 // WelcomeScreen.js
 import React from 'react';
-import { Button, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 
-const WelcomeScreen = ({ navigation }) => {
+const WelcomeScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
-      <Button title="Login" onPress={() => navigation.navigate('Login')} />
-      <Button title="Register" onPress={() => navigation.navigate('Register')} />
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login', {from: 'Welcome'})}>
+        <Text style={styles.text}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register', {from: 'Welcome'})}>
+        <Text style={styles.text}>Register</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
+// Styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'lightblue',
   },
-  input: {
+  button: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    borderColor: '#0377fc',
+    borderRadius: 20,
     padding: 10,
     marginBottom: 10,
-    width: '100%',
+    backgroundColor: '#0377fc',
+  },
+  text: {
+    color: 'white',
+    fontSize: 24,
+    textAlign: 'center',
   },
 });
 

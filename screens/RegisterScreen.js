@@ -1,9 +1,9 @@
 // RegisterScreen.js
 import React, { useState } from 'react';
-import { Button, TextInput, View, StyleSheet } from 'react-native';
+import { Button, TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation, route }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -14,15 +14,24 @@ const RegisterScreen = ({ navigation }) => {
     navigation.navigate('Welcome');
   };
 
+  const toLogin = () => {
+    navigation.navigate('Login');
+  }
+
   const register = () => {
     if (!firstName || !lastName || !email || !password) {
       setErrorMessage('Please fill in all fields');
       return;
     }
 
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setErrorMessage('Please enter a valid email');
+      return;
+    }
+
     axios.post('https://localhost:7267/api/auth/Register', { firstName, lastName, email, password })
       .then(res => {
-        navigation.navigate('Home', { user: res.data });
+        navigation.navigate('Login', { user: res.data, from: 'Register' });
       })
       .catch(err => console.error(err));
   };
@@ -37,23 +46,26 @@ const RegisterScreen = ({ navigation }) => {
         <TextInput style={styles.textInput} placeholder="Password" onChangeText={setPassword} secureTextEntry />
       </View>
       <Button style={styles.button} title="Register" onPress={register} />
-      <Button style={styles.button} title="Back" onPress={backToWelcome} />
+      <Text style={styles.existingAccount}>Already have an account?</Text>
+      <Button style={styles.button} title="Log in here" onPress={toLogin} />
     </View>
   );
 };
 
+// Styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'lightblue',
   },
   input: {
+    backgroundColor: '#0077B6',
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    borderColor: 'black',
+    borderRadius: 10,
     padding: 10,
     marginBottom: 10,
     width: '100%',
@@ -66,31 +78,22 @@ const styles = StyleSheet.create({
   button: {
     fontSize: 20,
     marginBottom: 10,
+    borderRadius: 30,
+    backgroundColor: '#0077B6',
+    borderColor: 'black',
+    borderWidth: 1,
+    padding: 10,
   },
   errorMessage: {
     fontSize: 16,
     color: 'red',
     marginBottom: 10,
   },
+  existingAccount: {
+    fontSize: 20,
+    marginTop: 20,
+    marginBottom: 20,
+  }
 });
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: 20,
-//     backgroundColor: '#f5f5f5',
-//   },
-//   input: {
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     borderRadius: 5,
-//     padding: 10,
-//     marginBottom: 10,
-//     width: '100%',
-//     alignItems: 'center',
-//   },
-// });
 
 export default RegisterScreen;
