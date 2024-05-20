@@ -1,6 +1,6 @@
 // LoginScreen.js
 import React, { useState } from 'react';
-import { Button, TextInput, View, StyleSheet, Text } from 'react-native';
+import { Button, TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
 const LoginScreen = ({ navigation, route }) => {
@@ -33,10 +33,17 @@ const LoginScreen = ({ navigation, route }) => {
         <TextInput style={styles.textInput} placeholder="Email" onChangeText={setEmail} />
         <TextInput style={styles.textInput} placeholder="Password" onChangeText={setPassword} secureTextEntry />
       </View>
-      
-      <Button style={styles.button} title="Login" onPress={login} />
+
+      <TouchableOpacity style={styles.button} onPress={login}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
       <Text style={styles.existingAccount}>Don't have an account?</Text>
-      <Button style={styles.button} title="Create Account" onPress={toRegister} />
+
+      <TouchableOpacity style={styles.registerButton} onPress={toRegister}>
+        <Text style={styles.buttonText}>Create Account</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -54,7 +61,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0077B6',
     borderWidth: 1,
     borderColor: 'black',
-    borderRadius: 1,
+    borderRadius: 30,
     padding: 10,
     marginBottom: 10,
     width: '100%',
@@ -65,8 +72,22 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    fontSize: 20,
     marginBottom: 10,
+    borderRadius: 30,
+    backgroundColor: '#0377fc',
+    width: 150,
+  },
+  registerButton: {
+    marginBottom: 10,
+    borderRadius: 30,
+    backgroundColor: '#0377fc',
+    width: 250,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 30,
+    textAlign: 'center',
+    marginBottom: 5,
   },
   errorMessage: {
     fontSize: 16,

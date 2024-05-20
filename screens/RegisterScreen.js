@@ -45,9 +45,18 @@ const RegisterScreen = ({ navigation, route }) => {
         <TextInput style={styles.textInput} placeholder="Email" onChangeText={setEmail} />
         <TextInput style={styles.textInput} placeholder="Password" onChangeText={setPassword} secureTextEntry />
       </View>
-      <Button style={styles.button} title="Register" onPress={register} />
-      <Text style={styles.existingAccount}>Already have an account?</Text>
-      <Button style={styles.button} title="Log in here" onPress={toLogin} />
+
+      <TouchableOpacity style={styles.button} onPress={register}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.existingAccount}>Don't have an account?</Text>
+
+      <TouchableOpacity style={styles.loginButton} onPress={toLogin}>
+        <Text style={styles.buttonText}>Create Account</Text>
+      </TouchableOpacity>
+
+
     </View>
   );
 };
@@ -65,7 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0077B6',
     borderWidth: 1,
     borderColor: 'black',
-    borderRadius: 10,
+    borderRadius: 30,
     padding: 10,
     marginBottom: 10,
     width: '100%',
@@ -76,24 +85,38 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    fontSize: 20,
     marginBottom: 10,
     borderRadius: 30,
-    backgroundColor: '#0077B6',
-    borderColor: 'black',
-    borderWidth: 1,
-    padding: 10,
+    backgroundColor: '#0377fc',
+    width: 150,
+  },
+  loginButton: {
+    marginBottom: 10,
+    borderRadius: 30,
+    backgroundColor: '#0377fc',
+    width: 250,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 30,
+    textAlign: 'center',
+    marginBottom: 5,
   },
   errorMessage: {
     fontSize: 16,
     color: 'red',
     marginBottom: 10,
   },
+  fromRegister: {
+    fontSize: 16,
+    color: 'green',
+    marginBottom: 10,
+  },
   existingAccount: {
     fontSize: 20,
     marginTop: 20,
     marginBottom: 20,
-  }
+  },
 });
 
 export default RegisterScreen;

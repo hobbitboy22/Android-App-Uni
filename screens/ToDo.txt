@@ -1,5 +1,6 @@
-Change buttons on login to touchable opacity
-Change buttons on create an account to touchable opacity
+DONE Change buttons on login to touchable opacity
+DONE Change buttons on create an account to touchable opacity
+
 Add footer on Home page
 Add Workout and Activity buttons in footer
 Edit home page styling
