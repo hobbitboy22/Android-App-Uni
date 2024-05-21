@@ -8,6 +8,7 @@ const RegisterScreen = ({ navigation, route }) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const backToWelcome = () => {
@@ -19,7 +20,7 @@ const RegisterScreen = ({ navigation, route }) => {
   }
 
   const register = () => {
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
       setErrorMessage('Please fill in all fields');
       return;
     }
@@ -29,11 +30,19 @@ const RegisterScreen = ({ navigation, route }) => {
       return;
     }
 
+    if (password !== confirmPassword){
+      setErrorMessage('Passwords do not match');
+      return;
+    }
+
     axios.post('https://localhost:7267/api/auth/Register', { firstName, lastName, email, password })
       .then(res => {
         navigation.navigate('Login', { user: res.data, from: 'Register' });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        setErrorMessage(`${err.response.data.message}. Try a stronger password` || 'Registration failed. Please try again.');
+      });
   };
 
   return (
@@ -44,16 +53,17 @@ const RegisterScreen = ({ navigation, route }) => {
         <TextInput style={styles.textInput} placeholder="Last Name" onChangeText={setLastName} />
         <TextInput style={styles.textInput} placeholder="Email" onChangeText={setEmail} />
         <TextInput style={styles.textInput} placeholder="Password" onChangeText={setPassword} secureTextEntry />
+        <TextInput style={styles.textInput} placeholder="Confirm Password" onChangeText={setConfirmPassword} secureTextEntry />
       </View>
 
       <TouchableOpacity style={styles.button} onPress={register}>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
 
-      <Text style={styles.existingAccount}>Don't have an account?</Text>
+      <Text style={styles.existingAccount}>Already have an account?</Text>
 
       <TouchableOpacity style={styles.loginButton} onPress={toLogin}>
-        <Text style={styles.buttonText}>Create Account</Text>
+        <Text style={styles.buttonText}>Login Here</Text>
       </TouchableOpacity>
 
 

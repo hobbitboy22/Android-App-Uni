@@ -1,6 +1,6 @@
 // WorkoutScreen.js
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Text, Picker, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
+import { View, TextInput, Text, Picker, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, } from 'react-native'
 
 const WorkoutScreen = ({ route, navigation }) => {
     const [activities, setActivities] = useState([]);
@@ -62,52 +62,58 @@ const WorkoutScreen = ({ route, navigation }) => {
     };
   
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <View style={styles.container}>
-                    <Picker
-                        selectedValue={selectedActivity ? selectedActivity.id : null}
-                        onValueChange={(itemValue) => {
-                            const activityId = Number(itemValue);
-                            const activity = activities.find((activity) => activity.id === activityId);
-                            setSelectedActivity(activity);
-                        }}
-                    >
-                        <Picker.Item label="Please select an activity" value={null} />
-                        {activities.map((activity) => (
-                            <Picker.Item key={activity.id} label={activity.name} value={activity.id} />
-                        ))}
-                    </Picker>
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <View style={styles.container}>
+            <Picker
+              selectedValue={selectedActivity ? selectedActivity.id : null}
+              onValueChange={(itemValue) => {
+                const activityId = Number(itemValue);
+                const activity = activities.find((activity) => activity.id === activityId);
+                setSelectedActivity(activity);
+              }}
+            >
+              <Picker.Item label="Please select an activity" value={null} />
+              {activities.map((activity) => (
+                <Picker.Item key={activity.id} label={activity.name} value={activity.id} />
+              ))}
+            </Picker>
 
-                    <TextInput
-                        style={styles.input}
-                        keyboardType="numeric"
-                        onChangeText={(text) => setDuration(text)}
-                        value={duration}
-                    />
-                    <Button title="Add Workout" onPress={addWorkout} />
-                </View>
-            </ScrollView>
+            <Text style={styles.textInput}>Workout Duration (in minutes):</Text>
 
-            <View style={styles.footer}>
-                <View style={styles.footerButton}>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              onChangeText={(text) => setDuration(text)}
+              value={duration}
+            />
 
-                    <TouchableOpacity onPress={() => navigation.navigate('AddActivity', {user: user} )}>
-                        <Text style={styles.footerText}>Add Activity</Text>
-                    </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={addWorkout}>
+              <Text style={styles.buttonText}>Add Workout</Text>
+            </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('Home', { user: user })}>
-                        <Text style={styles.footerText}>Home</Text>
-                    </TouchableOpacity>
+          </View>
+        </ScrollView>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('Workout', { user: user })}>
-                        <Text style={styles.footerText}>Add Workout</Text>
-                    </TouchableOpacity>
+        <View style={styles.footer}>
+          <View style={styles.footerButton}>
 
-                </View>
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('AddActivity', {user: user} )}>
+              <Text style={styles.footerText}>Add Activity</Text>
+            </TouchableOpacity>
 
-        </SafeAreaView>
+            <TouchableOpacity onPress={() => navigation.navigate('Home', { user: user })}>
+              <Text style={styles.footerText}>Home</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('Workout', { user: user })}>
+              <Text style={styles.footerText}>Add Workout</Text>
+            </TouchableOpacity>
+
+          </View>
+        </View>
+
+      </SafeAreaView>
 
     );
   };
@@ -144,16 +150,6 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       padding: 10,
     },
-    errorMessage: {
-      fontSize: 16,
-      color: 'red',
-      marginBottom: 10,
-    },
-    existingAccount: {
-      fontSize: 20,
-      marginTop: 20,
-      marginBottom: 20,
-    },
     footer: {
         width: '100%',
         height: 50,
@@ -169,7 +165,13 @@ const styles = StyleSheet.create({
       footerText: {
         color: 'black',
         fontSize: 20,
-      }
+      },
+      buttonText: {
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center',
+        marginBottom: 5,
+      },
   });
 
 export default WorkoutScreen;
