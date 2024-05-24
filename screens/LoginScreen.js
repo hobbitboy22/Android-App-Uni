@@ -1,6 +1,6 @@
 // LoginScreen.js
 import React, { useState } from 'react';
-import { Button, TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
 const LoginScreen = ({ navigation, route }) => {
